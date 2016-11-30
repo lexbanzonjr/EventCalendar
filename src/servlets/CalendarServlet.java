@@ -14,6 +14,9 @@ import data.EventDataSource;
 import data.EventItem;
 import data.UserDataSource;
 import data.UserItem;
+import event.JdbcEventDAO;
+import likes.JdbcLikesDAO;
+import user.JdbcUserDAO;
 
 @WebServlet(
   name = "CalendarServlet",
@@ -22,6 +25,10 @@ import data.UserItem;
 )
 public class CalendarServlet extends HttpServlet 
 {
+  private JdbcEventDAO jdbcEventDAO;
+  private JdbcLikesDAO jdbcLikesDAO;
+  private JdbcUserDAO jdbcUserDAO;
+  
   private static final long serialVersionUID = 1L;
   private EventDataSource eventDataSource = new EventDataSource();
   private UserDataSource userDataSource = new UserDataSource();
@@ -181,6 +188,21 @@ public class CalendarServlet extends HttpServlet
     event.setStartDateTime("07-04-2017");
     eventDataSource.add(event);
   }
+  
+  public void setJdbcEventDAO(JdbcEventDAO jdbcEventDAO)  
+  {
+    this.jdbcEventDAO = jdbcEventDAO;
+  }
+  
+  public void setJdbcLikesDAO(JdbcLikesDAO jdbcLikesDAO)
+  {
+    this.jdbcLikesDAO = jdbcLikesDAO;
+  }
+  
+  public void setJdbcUserDAO(JdbcUserDAO jdbcUserDAO)  
+  {
+    this.jdbcUserDAO = jdbcUserDAO;
+  }    
   
   public void viewLikedEvents(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException

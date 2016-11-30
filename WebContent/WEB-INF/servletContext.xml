@@ -38,21 +38,19 @@
     <property name="jdbcLikesDAO" ref="jdbcLikesDAO" />
   </bean> 
   
-  <bean name="calendarController" class="controllers.CalendarController" >
+  <bean name="calendarServlet" class="servlets.CalendarServlet" >
     <property name="jdbcUserDAO" ref="jdbcUserDAO" />
     <property name="jdbcEventDAO" ref="jdbcEventDAO" />
     <property name="jdbcLikesDAO" ref="jdbcLikesDAO" />
   </bean>
   
-  <bean name="loginController" class="controllers.LoginController" >
+  <bean name="loginServlet" class="servlets.LoginServlet" >
     <property name="jdbcUserDAO" ref="jdbcUserDAO" />
   </bean>
   
-  <bean name="logoutController" class="controllers.LogoutController" />
+  <bean name="logoutServlet" class="servlets.LogoutServlet" />
   
-  <bean name="eventController" class="controllers.EventController" >
-    <property name="jdbcEventDAO" ref="jdbcEventDAO" />
+  <bean name="registerServlet" class="servlets.RegisterServlet" >
     <property name="jdbcUserDAO" ref="jdbcUserDAO" />
-    <property name="jdbcLikesDAO" ref="jdbcLikesDAO" />
   </bean>
 </beans>

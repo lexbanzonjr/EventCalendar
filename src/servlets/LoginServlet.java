@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import data.UserDataSource;
 import data.UserItem;
+import user.JdbcUserDAO;
 
 @WebServlet(
     name = "loginServlet",
@@ -18,6 +19,7 @@ import data.UserItem;
 )
 public class LoginServlet extends HttpServlet
 {
+  private JdbcUserDAO jdbcUserDAO;
 	private static final long serialVersionUID = 1L;
 	private UserDataSource userDataSource = new UserDataSource();
   
@@ -87,5 +89,10 @@ public class LoginServlet extends HttpServlet
     /* Users */
     UserItem user = UserItem.getNew("Lex", "test");    
     userDataSource.add(user);
+  }  
+  
+  public void setJdbcUserDAO(JdbcUserDAO jdbcUserDAO)  
+  {
+    this.jdbcUserDAO = jdbcUserDAO;
   }  
 }

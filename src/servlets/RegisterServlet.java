@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import data.UserItem;
+import user.JdbcUserDAO;
 import data.UserDataSource;
 
 @WebServlet(
@@ -18,6 +19,7 @@ import data.UserDataSource;
 )
 public class RegisterServlet extends HttpServlet
 {
+  private JdbcUserDAO jdbcUserDAO;
   private static final long serialVersionUID = 1L;
 
   UserDataSource userDataSource = new UserDataSource();
@@ -61,4 +63,9 @@ public class RegisterServlet extends HttpServlet
       response.sendRedirect("login?message=CreatedNewUserSuccess");
     }
   }
+  
+  public void setJdbcUserDAO(JdbcUserDAO jdbcUserDAO)  
+  {
+    this.jdbcUserDAO = jdbcUserDAO;
+  }  
 }
