@@ -43,7 +43,7 @@ public class CalendarServlet extends HttpServlet
   {    
     String eventName = request.getParameter("eventName");
     String startDateTime = parseDate(request.getParameter("startDateTime"));    
-    String endDateTime = parseDate(request.getParameter("startDateTime")); 
+    String endDateTime = parseDate(request.getParameter("endDateTime")); 
     int ownerId = getOwnerId(request);
     
     Event event = new Event(eventName, ownerId, startDateTime, endDateTime);   
