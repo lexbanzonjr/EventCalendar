@@ -1,6 +1,8 @@
 package servlets;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -14,6 +16,7 @@ import data.EventDataSource;
 import data.EventItem;
 import data.UserDataSource;
 import data.UserItem;
+import event.Event;
 import event.JdbcEventDAO;
 import likes.JdbcLikesDAO;
 import user.JdbcUserDAO;
@@ -26,35 +29,27 @@ import user.User;
 )
 public class CalendarServlet extends HttpServlet 
 {
-  private JdbcEventDAO jdbcEventDAO;
+  private static JdbcEventDAO jdbcEventDAO;
   private JdbcLikesDAO jdbcLikesDAO;
   private JdbcUserDAO jdbcUserDAO;
   
   private static final long serialVersionUID = 1L;
   private EventDataSource eventDataSource = new EventDataSource();
   private UserDataSource userDataSource = new UserDataSource();
-
+  
   public void createTicket(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException
-  {
-    // Get parameters
+  {    
     String eventName = request.getParameter("eventName");
-    String startDateTime = request.getParameter("startDateTime");
-    String endDateTime = request.getParameter("endDateTime");    
+    String startDateTime = parseDate(request.getParameter("startDateTime"));    
+    String endDateTime = parseDate(request.getParameter("startDateTime")); 
+    int ownerId = getOwnerId(request);
     
-    // Getting user id    
-    UserItem user = (UserItem)request.getSession().getAttribute("LoginUserItem");
-    long ownerId = user.getId();
-    
-    // Create and set properties for event
-    EventItem event = EventItem.getNew(ownerId);
-    event.setEventName(eventName);
-    event.setStartDateTime(startDateTime);
-    event.setEndDateTime(endDateTime);
-    eventDataSource.add(event);    
+    Event event = new Event(eventName, ownerId, startDateTime, endDateTime);   
+    jdbcEventDAO.add(event);
     
     // Go to home page after event has been added
-    response.sendRedirect("calendar?action=home");
+    response.sendRedirect("calendar?action=home");    
   }
   
   @Override
@@ -171,6 +166,12 @@ public class CalendarServlet extends HttpServlet
       }
   }
 
+  public int getOwnerId(HttpServletRequest request)
+  {
+    HttpSession session = request.getSession();
+    User user = (User) session.getAttribute("LoginUserItem");
+    return user.getId();  	
+  }
   
   @Override
   public void init() throws ServletException
@@ -188,6 +189,23 @@ public class CalendarServlet extends HttpServlet
     event.setEventName("Independence Day");
     event.setStartDateTime("07-04-2017");
     eventDataSource.add(event);
+  }
+  
+  public String parseDate(String date)
+  {
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("mm-dd-yyyy");
+    String pDate = null;
+    try
+    {
+	    Date dDate = simpleDateFormat.parse(date); 
+	    pDate = simpleDateFormat.format(dDate); 
+    }
+    catch (Exception e)
+    {
+    	System.out.println("Error CalendarServlet.parseDate: " + e.getMessage());
+    }
+      	
+    return pDate;
   }
   
   public void setJdbcEventDAO(JdbcEventDAO jdbcEventDAO)  
