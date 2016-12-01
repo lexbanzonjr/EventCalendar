@@ -17,6 +17,7 @@ import data.UserItem;
 import event.JdbcEventDAO;
 import likes.JdbcLikesDAO;
 import user.JdbcUserDAO;
+import user.User;
 
 @WebServlet(
   name = "CalendarServlet",
@@ -64,8 +65,8 @@ public class CalendarServlet extends HttpServlet
     HttpSession session = request.getSession();
       
     // Check if the user is logged in
-    UserItem loginUserItem = (UserItem)session.getAttribute("LoginUserItem");
-    if(loginUserItem == null)
+    User loginUser = (User)session.getAttribute("LoginUserItem");
+    if(loginUser == null)
     {  
       response.sendRedirect("login");
       return;
@@ -91,7 +92,7 @@ public class CalendarServlet extends HttpServlet
       case "dislikeEvent":
       { // local scope
         // Get current user's Id        
-        long userID = loginUserItem.getId();
+        long userID = loginUser.getId();
         
         // Get the event Id
         String s = request.getParameter("eventId");
@@ -108,7 +109,7 @@ public class CalendarServlet extends HttpServlet
       case "likeEvent":
       { // local scope
         // Get current user's Id        
-        long userID = loginUserItem.getId();
+        long userID = loginUser.getId();
         
         // Get the event Id
         String s = request.getParameter("eventId");

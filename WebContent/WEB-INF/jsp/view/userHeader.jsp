@@ -1,8 +1,7 @@
-<%@ page import="data.UserItem"%>
-<%@ page import="data.EventItem"%>
+<%@ page import="user.User"%>
 <%
 
-  UserItem user = (UserItem)session.getAttribute("LoginUserItem");
+  User user = (User)session.getAttribute("LoginUserItem");
   if (user != null)
   {
 %>

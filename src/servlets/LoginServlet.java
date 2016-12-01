@@ -9,9 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import data.UserDataSource;
-import data.UserItem;
 import user.JdbcUserDAO;
+import user.User;
 
 @WebServlet(
     name = "loginServlet",
@@ -19,9 +18,8 @@ import user.JdbcUserDAO;
 )
 public class LoginServlet extends HttpServlet
 {
-  private JdbcUserDAO jdbcUserDAO;
+  private static JdbcUserDAO jdbcUserDAO;	// Why static?
 	private static final long serialVersionUID = 1L;
-	private UserDataSource userDataSource = new UserDataSource();
   
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) 
@@ -64,32 +62,38 @@ public class LoginServlet extends HttpServlet
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException
-  {  
+  {
     String username = request.getParameter("username");
     String password = request.getParameter("password");
-    
-    UserItem userItem = userDataSource.findUserItemByUsername(username);    
-  
-    if (userItem != null && userItem.getPassword().equals(password))
-    {
-      UserItem loginUserItem = userItem;
-      HttpSession session = request.getSession();
-      session.setAttribute("LoginUserItem", loginUserItem);      
-      response.sendRedirect("calendar?action=home");
+  	
+    User user = null;
+    HttpSession session = request.getSession();
+		try
+    { // Check to see if the user exists in the database
+      user = jdbcUserDAO.findUserByUsername(username);
     }
+    catch (Exception e)
+    { // An exception occurred. The user does not exist.     
+      session.setAttribute("error", e.getMessage()); 
+    }
+    
+    // Need to check if the user is not null. A null occurs only if 
+    // the exception occurs where the username did not exist in the
+    // database.
+    if (user != null)
+    { 
+      // Check the passwords
+      if (user.getPassword().equals(password))
+      { 
+	      session.setAttribute("LoginUserItem", user);      
+	      response.sendRedirect("calendar?action=home");
+      }
+    } 
     else
     {
-      response.sendRedirect("login?message=badCredentials");
+    	response.sendRedirect("login?message=badCredentials");    	
     }
   }
-  
-  @Override
-  public void init() throws ServletException
-  {
-    /* Users */
-    UserItem user = UserItem.getNew("Lex", "test");    
-    userDataSource.add(user);
-  }  
   
   public void setJdbcUserDAO(JdbcUserDAO jdbcUserDAO)  
   {

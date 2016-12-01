@@ -23,7 +23,7 @@ Here's all the events: <br />
   Event Name: <c:out value="${events.getEventName()}" /><br /> 
   Date Created: <c:out value="${events.getCreateDateTime()}" /><br /> 
   Start Date: <c:out value="${events.getStartDateTime()}" /><br />
-  Owner: <c:out value="${users.get(events.getOwnerId()).getUsername()}" /><br />
+  Owner: <br />
   <c:out value="${events.constructLikeForHTML(userId,redirect)}" escapeXml="false"/><br />
   <br />
 </c:forEach>
