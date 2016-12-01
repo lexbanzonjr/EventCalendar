@@ -1,7 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page import="data.UserItem"%>
-<%@ page import="data.EventItem"%>
 <%
   String redirect = "frontpage";
 
@@ -20,12 +18,13 @@
 Welcome <c:out value="${username}" /> (<c:out value="${userId}" />)<br />
 Here's all the events: <br />
 <c:forEach var="events" items="${events}">
-  Event Name: <c:out value="${events.getEventName()}" /><br /> 
-  Date Created: <c:out value="${events.getCreateDateTime()}" /><br /> 
-  Start Date: <c:out value="${events.getStartDateTime()}" /><br />
-  Owner: <br />
-  <c:out value="${events.constructLikeForHTML(userId,redirect)}" escapeXml="false"/><br />
-  <br />
-</c:forEach>
+    Owner Name: ${events.getOwnerName()} <br>
+    Event ID: ${events.getEventId()} <br>
+    Event Name: ${events.getEventName()} <br>
+    Start Date/Time: ${events.getStartDateTime()} <br>
+    End Date/Time: ${events.getEndDateTime()} <br>
+    ${events.getData()} <br>
+    <br>
+  </c:forEach>
 </body>
 </html>
