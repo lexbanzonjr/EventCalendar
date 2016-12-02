@@ -57,11 +57,7 @@ public class CalendarServlet extends HttpServlet
   protected void doGet(HttpServletRequest request, HttpServletResponse response) 
       throws ServletException, IOException 
   {  
-    // Create session if not yet created
-    HttpSession session = request.getSession();
-      
-    // Check if the user is logged in
-    User loginUser = (User)session.getAttribute("LoginUserItem");
+		User loginUser = getSessionUser(request);
     if(loginUser == null)
     {  
       response.sendRedirect("login");
@@ -236,25 +232,39 @@ public class CalendarServlet extends HttpServlet
   public void viewCreatedEvents(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException
     { 
-      UserItem user = (UserItem)request.getSession().getAttribute("LoginUserItem");     
-      List<EventItem> events = eventDataSource.findAllCreatedByUserId(user.getId());
+  		//      UserItem user = (UserItem)request.getSession().getAttribute("LoginUserItem");
+
+			User loginUser = getSessionUser(request);
+			if(loginUser == null)
+      {  
+        response.sendRedirect("login");
+        return;
+      }
+		
+      List<Event> events = jdbcEventDAO.findAllCreatedByUserId(loginUser.getId()); 
       request.setAttribute("events", events);
       request.getRequestDispatcher("WEB-INF/jsp/view/viewCreatedEvents.jsp").forward(request, response);
     }
   
+  public User getSessionUser(HttpServletRequest request)
+  {        
+    // Get session
+    HttpSession session = request.getSession();
+    
+    // Check if the user is logged in
+    User loginUser = (User)session.getAttribute("LoginUserItem");
+    return loginUser;  	
+  }
+  
   public void viewUserFrontPage(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
-    {        
-	    // Create session if not yet created
-	    HttpSession session = request.getSession();
-	    
-	    // Check if the user is logged in
-	    User loginUser = (User)session.getAttribute("LoginUserItem");
-	    if(loginUser == null)
-	    {  
-	      response.sendRedirect("login");
-	      return;
-	    }
-	    
+    {
+  		User loginUser = getSessionUser(request);
+      if(loginUser == null)
+      {  
+        response.sendRedirect("login");
+        return;
+      }
+  	
 	    // Get all events
 	    List<Event> eventList = jdbcEventDAO.findAll();      
 	    for (Event event : eventList)
