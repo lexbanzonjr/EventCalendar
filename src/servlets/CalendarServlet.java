@@ -163,7 +163,48 @@ public class CalendarServlet extends HttpServlet
       }
   }
 
-  public int getOwnerId(HttpServletRequest request)
+  public void findEventLikes(HttpServletRequest request, List<Event> eventList)
+	{
+		User loginUser = getSessionUser(request);  
+	  for (Event event : eventList)
+	  { 
+	    // Set like in the event
+	    int eventId = event.getEventId();
+	    int userId = loginUser.getId();
+	    Likes like = null;
+			try
+			{
+				like = jdbcLikesDAO.findLike(userId, eventId);
+			} 
+			catch (Exception e)
+			{
+				System.out.println(e.getMessage());
+			}
+	    if (like != null)
+	    {
+	      event.setLike(true);
+	      event.setData("<a href=\"event/dislike/" + eventId + "\">Dislike</a> ");
+	    }
+	    else
+	    {
+	      event.setData("<a href=\"event/like/" + eventId + "\">Like</a> ");
+	    }      
+	  }
+	}
+
+	public void findEventOwner(List<Event> eventList)
+	{
+	  for (Event event : eventList)
+	  { 
+	    // Set owner name in the event
+	    int ownerId = event.getOwnerId();
+	    User user = jdbcUserDAO.findUserById(ownerId);
+	    String ownerName = user.getUsername();
+	    event.setOwnerName(ownerName);
+	  }
+	}
+
+	public int getOwnerId(HttpServletRequest request)
   {
     HttpSession session = request.getSession();
     User user = (User) session.getAttribute("LoginUserItem");
@@ -233,17 +274,24 @@ public class CalendarServlet extends HttpServlet
   public void viewLikedEvents(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException
     { 
-      UserItem user = (UserItem)request.getSession().getAttribute("LoginUserItem");      
-      List<EventItem> events = eventDataSource.findAllLikedEventsByUserId(user.getId());
-      request.setAttribute("events", events);
+			User loginUser = getSessionUser(request);
+			if(loginUser == null)
+	    {  
+	      response.sendRedirect("login");
+	      return;
+	    }    
+			
+      List<Event> eventList = jdbcEventDAO.findAllEventLikedByUserId(loginUser.getId());
+      findEventLikes(request, eventList);
+      findEventOwner(eventList);
+      
+      request.setAttribute("events", eventList);
       request.getRequestDispatcher("WEB-INF/jsp/view/viewLikedEvents.jsp").forward(request, response);
     }
   
   public void viewCreatedEvents(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException
     { 
-  		//      UserItem user = (UserItem)request.getSession().getAttribute("LoginUserItem");
-
 			User loginUser = getSessionUser(request);
 			if(loginUser == null)
       {  
@@ -251,8 +299,11 @@ public class CalendarServlet extends HttpServlet
         return;
       }
 		
-      List<Event> events = jdbcEventDAO.findAllCreatedByUserId(loginUser.getId()); 
-      request.setAttribute("events", events);
+      List<Event> eventList = jdbcEventDAO.findAllCreatedByUserId(loginUser.getId()); 
+      findEventLikes(request, eventList);
+      findEventOwner(eventList);
+      
+      request.setAttribute("events", eventList);
       request.getRequestDispatcher("WEB-INF/jsp/view/viewCreatedEvents.jsp").forward(request, response);
     }
   
@@ -265,42 +316,12 @@ public class CalendarServlet extends HttpServlet
         return;
       }
   	
-	    // Get all events
-	    List<Event> eventList = jdbcEventDAO.findAll();      
-	    for (Event event : eventList)
-	    { 
-	      // Set owner name in the event
-	      int ownerId = event.getOwnerId();
-	      User user = jdbcUserDAO.findUserById(ownerId);
-	      String ownerName = user.getUsername();
-	      event.setOwnerName(ownerName);
-	      
-	      // Set like in the event
-	      int eventId = event.getEventId();
-	      int userId = loginUser.getId();
-	      Likes like = null;
-				try
-				{
-					like = jdbcLikesDAO.findLike(userId, eventId);
-				} 
-				catch (Exception e)
-				{
-					System.out.println(e.getMessage());
-				}
-	      if (like != null)
-	      {
-	        event.setLike(true);
-	        event.setData("<a href=\"event/dislike/" + eventId + "\">Dislike</a> ");
-	      }
-	      else
-	      {
-	        event.setData("<a href=\"event/like/" + eventId + "\">Like</a> ");
-	      }
-	    }	    
-//      List<EventItem> events = eventDataSource.findAllSortedByDate();
-//      List<UserItem> users = userDataSource.findAll();
+	    // Get all events and get their likes and owner name
+      List<Event> eventList = jdbcEventDAO.findAll();    
+      findEventLikes(request, eventList);
+      findEventOwner(eventList);
+      
       request.setAttribute("events", eventList);    
       request.getRequestDispatcher("WEB-INF/jsp/view/frontpage.jsp").forward(request, response);
-    }  
-    
+    }
 }

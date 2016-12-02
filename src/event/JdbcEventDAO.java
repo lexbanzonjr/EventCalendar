@@ -102,7 +102,7 @@ public class JdbcEventDAO extends JdbcDaoSupport implements EventDAO
     return list;
   }
   
-  public List<Event> findAllEventLikedByUserId(int userId) throws Exception
+  public List<Event> findAllEventLikedByUserId(int userId) 
   {
     String sql = "SELECT "
     		+ "EVENTID, "
