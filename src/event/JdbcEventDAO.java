@@ -104,8 +104,16 @@ public class JdbcEventDAO extends JdbcDaoSupport implements EventDAO
   
   public List<Event> findAllEventLikedByUserId(int userId) throws Exception
   {
-    String sql = "SELECT EVENTID, CREATEDATETIME, ENDDATETIME, EVENTNAME, OWNERID, STARTDATETIME FROM EVENT "
-        + "JOIN LIKES ON EVENT.EVENTID=LIKES.EVENTID WHERE LIKES.USERID = ? "
+    String sql = "SELECT "
+    		+ "EVENTID, "
+    		+ "CREATEDATETIME, "
+    		+ "ENDDATETIME, "
+    		+ "EVENTNAME, "
+    		+ "OWNERID, "
+    		+ "STARTDATETIME "
+    		+ "FROM EVENT "
+        + "JOIN LIKES ON EVENT.EVENTID=LIKES.EVENTID "
+        + "WHERE LIKES.USERID = ? "
         + "ORDER BY TO_DATE(STARTDATETIME, 'MM-DD-YYYY') DESC";
     
     List<Event> list = new ArrayList<Event>();
