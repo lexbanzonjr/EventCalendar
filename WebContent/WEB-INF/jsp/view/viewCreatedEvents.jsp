@@ -13,12 +13,6 @@
 </head>
 <body>
 Here's all the events you've created: <br />
-<c:forEach var="events" items="${events}">
-  Event Name: <c:out value="${events.getEventName()}" /><br /> 
-  Date Created: <c:out value="${events.getCreateDateTime()}" /><br /> 
-  Start Date: <c:out value="${events.getStartDateTime()}" /><br />
-  <c:out value="${events.constructLikeForHTML(userId,redirect)}" escapeXml="false"/><br />
-  <br />
-</c:forEach>
+<%@ include file="ListEvents.jsp" %>
 </body>
 </html>
