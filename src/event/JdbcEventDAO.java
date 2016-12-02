@@ -121,7 +121,16 @@ public class JdbcEventDAO extends JdbcDaoSupport implements EventDAO
   
   public List<Event> findAllCreatedByUserId(int userId)
   {
-    String sql = "SELECT * FROM EVENT WHERE OWNERID = ? ORDER BY TO_DATE(STARTDATETIME, 'MM-DD-YYYY') DESC";
+    String sql = "SELECT "
+    		+ "EVENTID, "
+    		+ "CREATEDATETIME, "
+    		+ "EVENTNAME, "
+    		+ "OWNERID, "
+    		+ "case startdatetime when '' then '01-01-1900' else startdatetime end case STARTDATETIME, "
+    		+ "case enddatetime when '' then '01-01-1900' when '--' then '01-01-1900' else startdatetime end case ENDDATETIME "
+    		+ "FROM EVENT "
+    		+ "WHERE OWNERID = ? "
+    		+ "order by 5 desc";
     
     List<Event> list = new ArrayList<Event>();
     
