@@ -4,7 +4,7 @@
 <%
   String url = request.getScheme() + "://" +
                request.getServerName() + ":" +
-               request.getServerPort() + "/eventCalendar-pt2";
+               request.getServerPort() + "/EventCalendar";
 
   String dashboard = url + "/dashboard";
   pageContext.setAttribute("dashboard", dashboard);
