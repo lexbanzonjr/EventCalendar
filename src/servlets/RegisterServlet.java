@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import data.UserItem;
 import user.JdbcUserDAO;
+import user.User;
 import data.UserDataSource;
 
 @WebServlet(
@@ -19,7 +20,7 @@ import data.UserDataSource;
 )
 public class RegisterServlet extends HttpServlet
 {
-  private JdbcUserDAO jdbcUserDAO;
+  private static JdbcUserDAO jdbcUserDAO;
   private static final long serialVersionUID = 1L;
 
   UserDataSource userDataSource = new UserDataSource();
@@ -33,7 +34,7 @@ public class RegisterServlet extends HttpServlet
     
     // Check if user is logged in
     UserItem loginUserItem = (UserItem)session.getAttribute("LoginUserItem");
-    if (loginUserItem != null)
+    if (loginUserItem != null) 
     {
       response.sendRedirect("calendar");
       return;
@@ -48,20 +49,27 @@ public class RegisterServlet extends HttpServlet
   {
     String username = request.getParameter("username");
     String password = request.getParameter("password");
+
+    // Set the user variable to null.
+    User user = new User(username, password);    
+
+    // Create session if not yet created
+    HttpSession session = request.getSession();
     
-    UserItem user = userDataSource.findUserItemByUsername(username);
+    String message;
+    try
+    { // Add the user in the database
+      jdbcUserDAO.add(user);
+      message = "CreatedNewUserSuccess";
+    }
+    catch (Exception e)
+    { // Exception occurs if the username already exists.
+      // Stores exception message in session.
+      System.out.println(e.getMessage());
+      message = "Duplicate";
+    }
     
-    if (user != null)
-    {
-      request.setAttribute("message", "Username already exists");
-      request.getRequestDispatcher("WEB-INF/jsp/view/viewRegisterNewUser.jsp").forward(request, response);
-    }
-    else
-    {
-      user = UserItem.getNew(username, password);
-      userDataSource.add(user);
-      response.sendRedirect("login?message=CreatedNewUserSuccess");
-    }
+    response.sendRedirect("login?message=" + message);  	
   }
   
   public void setJdbcUserDAO(JdbcUserDAO jdbcUserDAO)  

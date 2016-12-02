@@ -52,6 +52,10 @@ public class LoginServlet extends HttpServlet
         case "logout":
           request.setAttribute("message", "You have successfully logged out.");
           break;
+          
+        case "Duplicate":
+        	request.setAttribute("message", "User already exists");
+        	break;
       }        
     }
     
