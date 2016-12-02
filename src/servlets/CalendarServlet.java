@@ -170,7 +170,17 @@ public class CalendarServlet extends HttpServlet
     return user.getId();  	
   }
   
-  @Override
+  public User getSessionUser(HttpServletRequest request)
+	{        
+	  // Get session
+	  HttpSession session = request.getSession();
+	  
+	  // Check if the user is logged in
+	  User loginUser = (User)session.getAttribute("LoginUserItem");
+	  return loginUser;  	
+	}
+
+	@Override
   public void init() throws ServletException
   {
     /* Events */    
@@ -245,16 +255,6 @@ public class CalendarServlet extends HttpServlet
       request.setAttribute("events", events);
       request.getRequestDispatcher("WEB-INF/jsp/view/viewCreatedEvents.jsp").forward(request, response);
     }
-  
-  public User getSessionUser(HttpServletRequest request)
-  {        
-    // Get session
-    HttpSession session = request.getSession();
-    
-    // Check if the user is logged in
-    User loginUser = (User)session.getAttribute("LoginUserItem");
-    return loginUser;  	
-  }
   
   public void viewUserFrontPage(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
