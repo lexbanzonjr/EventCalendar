@@ -25,14 +25,24 @@ public class JdbcEventDAO extends JdbcDaoSupport implements EventDAO
       event.getEndDateTime()});
   }
 
+  public String checkDate(String date)
+  {
+  	if (date == null)
+  		return null;
+  	if (date.equals("01-01-1900"))
+  		return null;
+		else
+			return date;  		
+  }
+  
   public Event convertRowToEvent(Map row)
   {
     Event event = new Event();
     
     event.setEventId((int)row.get(this.cnEventId));
-    event.setCreateDateTime((String)row.get(this.cnCreateDateTime));
-    event.setEndDateTime((String)row.get(this.cnEndDateTime));
-    event.setEventName((String)row.get(this.cnEventName));
+    event.setCreateDateTime(checkDate((String)row.get(this.cnCreateDateTime)));
+    event.setEndDateTime(checkDate((String)row.get(this.cnEndDateTime)));
+    event.setEventName(checkDate((String)row.get(this.cnEventName)));
     event.setOwnerId((int)row.get(this.cnOwnerId));
     event.setStartDateTime((String)row.get(this.cnStartDateTime));
     
@@ -70,7 +80,15 @@ public class JdbcEventDAO extends JdbcDaoSupport implements EventDAO
   
   public List<Event> findAll()
   {
-    String sql = "SELECT * FROM EVENT ORDER BY TO_DATE(STARTDATETIME, 'MM-DD-YYYY') DESC";
+    String sql = "SELECT "
+    		+ "EVENTID, "
+    		+ "CREATEDATETIME, "
+    		+ "EVENTNAME, "
+    		+ "OWNERID, "
+    		+ "case startdatetime when '' then '01-01-1900' else startdatetime end case STARTDATETIME, "
+    		+ "case enddatetime when '' then '01-01-1900' when '--' then '01-01-1900' else startdatetime end case ENDDATETIME "
+    		+ "FROM EVENT "
+    		+ "order by 5 desc";
     
     List<Event> list = new ArrayList<Event>();
     
@@ -83,10 +101,18 @@ public class JdbcEventDAO extends JdbcDaoSupport implements EventDAO
     return list;
   }
   
-  public List<Event> findAllEventLikedByUserId(int userId) throws Exception
+  public List<Event> findAllEventLikedByUserId(int userId) 
   {
-    String sql = "SELECT EVENTID, CREATEDATETIME, ENDDATETIME, EVENTNAME, OWNERID, STARTDATETIME FROM EVENT "
-        + "JOIN LIKES ON EVENT.EVENTID=LIKES.EVENTID WHERE LIKES.USERID = ? "
+    String sql = "SELECT "
+    		+ "EVENTID, "
+    		+ "CREATEDATETIME, "
+    		+ "ENDDATETIME, "
+    		+ "EVENTNAME, "
+    		+ "OWNERID, "
+    		+ "STARTDATETIME "
+    		+ "FROM EVENT "
+        + "JOIN LIKES ON EVENT.EVENTID=LIKES.EVENTID "
+        + "WHERE LIKES.USERID = ? "
         + "ORDER BY TO_DATE(STARTDATETIME, 'MM-DD-YYYY') DESC";
     
     List<Event> list = new ArrayList<Event>();
@@ -102,7 +128,16 @@ public class JdbcEventDAO extends JdbcDaoSupport implements EventDAO
   
   public List<Event> findAllCreatedByUserId(int userId)
   {
-    String sql = "SELECT * FROM EVENT WHERE OWNERID = ? ORDER BY TO_DATE(STARTDATETIME, 'MM-DD-YYYY') DESC";
+    String sql = "SELECT "
+    		+ "EVENTID, "
+    		+ "CREATEDATETIME, "
+    		+ "EVENTNAME, "
+    		+ "OWNERID, "
+    		+ "case startdatetime when '' then '01-01-1900' else startdatetime end case STARTDATETIME, "
+    		+ "case enddatetime when '' then '01-01-1900' when '--' then '01-01-1900' else startdatetime end case ENDDATETIME "
+    		+ "FROM EVENT "
+    		+ "WHERE OWNERID = ? "
+    		+ "order by 5 desc";
     
     List<Event> list = new ArrayList<Event>();
     
