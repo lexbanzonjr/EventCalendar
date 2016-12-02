@@ -2,6 +2,7 @@
 <%
 
   User user = (User)session.getAttribute("LoginUserItem");
+  
   if (user != null)
   {
 %>
@@ -13,4 +14,11 @@
 <a href="logout">Logout</a><br />
 
 <br />
-<%}%>
+<%
+  long userId = user.getId();
+  String username = user.getUsername();
+
+  pageContext.setAttribute("username", username);
+  pageContext.setAttribute("userId", userId);
+  }
+%>
