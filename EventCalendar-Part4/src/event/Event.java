@@ -2,6 +2,7 @@ package event;
 
 import java.io.Serializable;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -47,6 +48,7 @@ public class Event implements Serializable
     this.endDateTime = endDateTime;
   }
   
+  @Basic
   @Column(name = "CREATEDATETIME")
   public String getCreateDateTime()
   {
@@ -58,6 +60,7 @@ public class Event implements Serializable
     return data;
   }
   
+  @Basic
   @Column(name = "ENDDATETIME")
   public String getEndDateTime()
   {
@@ -72,12 +75,14 @@ public class Event implements Serializable
     return eventId;
   }
   
+  @Basic
   @Column(name = "EVENTNAME")
   public String getEventName()
   {
     return eventName;
   }
   
+  @Basic
   @Column(name = "OWNERID")
   public int getOwnerId()
   {
@@ -89,6 +94,7 @@ public class Event implements Serializable
     return ownerName;
   }
   
+  @Basic
   @Column(name = "STARTDATETIME")
   public String getStartDateTime()
   {

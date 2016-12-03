@@ -2,6 +2,7 @@ package user;
 
 import java.io.Serializable;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -39,12 +40,14 @@ public class User implements Serializable
     return Id;
   }
   
+  @Basic
   @Column(name = "USERNAME", unique = true)
   public String getUsername()
   {
     return username;
   }
   
+  @Basic
   @Column(name = "PASSWORD")
   public String getPassword()
   {

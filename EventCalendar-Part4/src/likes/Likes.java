@@ -2,6 +2,7 @@ package likes;
 
 import java.io.Serializable;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,6 +28,7 @@ public class Likes implements Serializable
     this.eventId = eventId;
   }
   
+  @Basic
   @Column(name = "EVENTID")
   public int getEventId()
   {
@@ -41,6 +43,7 @@ public class Likes implements Serializable
 	return likesId;
   }
 
+  @Basic
   @Column(name = "USERID")
   public int getUserId()
   {
