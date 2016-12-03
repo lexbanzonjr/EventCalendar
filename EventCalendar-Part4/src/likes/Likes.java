@@ -9,6 +9,7 @@ import javax.persistence.Table;
 @Table(name = "Likes")
 public class Likes implements Serializable 
 {
+  private int likesId;
   private int userId;
   private int eventId;
   
@@ -22,21 +23,33 @@ public class Likes implements Serializable
     this.eventId = eventId;
   }
   
-  public int getUserId()
-  {
-    return userId;
-  }
   public int getEventId()
   {
     return eventId;
   }
-  public void setUserId(int userId)
+
+  public int getLikesId()
   {
-    this.userId = userId;
+	return likesId;
   }
+
+  public int getUserId()
+  {
+    return userId;
+  }
+  public void setLikesId(int likesId) 
+  {
+	this.likesId = likesId;
+  }
+
   public void setEventId(int eventId)
   {
     this.eventId = eventId;
+  }
+
+  public void setUserId(int userId)
+  {
+    this.userId = userId;
   }
   
 
