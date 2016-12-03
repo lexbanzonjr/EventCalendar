@@ -2,6 +2,7 @@ package user;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -38,26 +39,30 @@ public class User implements Serializable
     return Id;
   }
   
+  @Column(name = "USERNAME")
   public String getUsername()
   {
     return username;
   }
+  
+  @Column(name = "PASSWORD")
   public String getPassword()
   {
     return password;
   }
+  
   public void setId(int id)
   {
     Id = id;
   }
+  
   public void setUsername(String username)
   {
     this.username = username;
   }
+  
   public void setPassword(String password)
   {
     this.password = password;
-  } 
-
-
+  }
 }
