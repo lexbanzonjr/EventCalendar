@@ -39,7 +39,7 @@ public class User implements Serializable
     return Id;
   }
   
-  @Column(name = "USERNAME")
+  @Column(name = "USERNAME", unique = true)
   public String getUsername()
   {
     return username;
