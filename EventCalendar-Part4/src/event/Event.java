@@ -3,6 +3,7 @@ package event;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity(name = "EventEntity")
@@ -55,10 +56,13 @@ public class Event implements Serializable
   {
     return endDateTime;
   }
+  
+  @Id
   public int getEventId()
   {
     return eventId;
   }
+  
   public String getEventName()
   {
     return eventName;

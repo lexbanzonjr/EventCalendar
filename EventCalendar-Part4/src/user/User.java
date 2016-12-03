@@ -3,6 +3,7 @@ package user;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity(name = "UserEntity")
@@ -28,10 +29,12 @@ public class User implements Serializable
     this.password = password;
   }
     
+  @Id
   public int getId()
   {
     return Id;
   }
+  
   public String getUsername()
   {
     return username;

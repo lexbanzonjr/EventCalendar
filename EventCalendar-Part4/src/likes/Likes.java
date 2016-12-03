@@ -3,6 +3,7 @@ package likes;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity(name = "LikesEntity")
@@ -28,6 +29,7 @@ public class Likes implements Serializable
     return eventId;
   }
 
+  @Id
   public int getLikesId()
   {
 	return likesId;
