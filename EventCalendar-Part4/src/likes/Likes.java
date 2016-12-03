@@ -2,6 +2,11 @@ package likes;
 
 import java.io.Serializable;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity(name = "LikesEntity")
+@Table(name = "Likes")
 public class Likes implements Serializable 
 {
   private int userId;

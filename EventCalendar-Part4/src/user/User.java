@@ -2,6 +2,11 @@ package user;
 
 import java.io.Serializable;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity(name = "UserEntity")
+@Table(name = "User")
 public class User implements Serializable
 {
   private int Id;

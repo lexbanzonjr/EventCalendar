@@ -2,6 +2,11 @@ package event;
 
 import java.io.Serializable;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity(name = "EventEntity")
+@Table(name = "Event")
 public class Event implements Serializable
 {
   static String pattern = "MM-dd-yyyy";
