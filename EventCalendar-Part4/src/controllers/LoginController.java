@@ -22,30 +22,6 @@ public class LoginController
 {
   private JdbcUserDAO jdbcUserDAO;
     
-  @RequestMapping(value = "register", method = RequestMethod.POST)
-  public View CreateUser(Map<String, Object> model, RegisterForm form, HttpSession session)
-  {
-    // Create a user object and set the username and password
-    // from the register form
-    User user = new User();
-    user.setUsername(form.getUsername());
-    user.setPassword(form.getPassword());
-    
-    try
-    { // Add the user in the database
-      jdbcUserDAO.add(user);
-    }
-    catch (Exception e)
-    { // Exception occurs if the username already exists.
-      // Stores exception message in session.
-      session.setAttribute("error", e.getMessage());
-    }
-    
-    // Go back to login screen after registering the user.
-    model.put("loginURL", "login");
-    return new RedirectView("/login/{loginURL}", true);
-  }
-  
   @RequestMapping(value="/", method = RequestMethod.GET)
   public View home(Map<String, Object> model)
   {
@@ -106,6 +82,30 @@ public class LoginController
   {
     model.put("registerForm", new RegisterForm());
     return "RegisterForm";
+  }
+
+  @RequestMapping(value = "register", method = RequestMethod.POST)
+  public View register(Map<String, Object> model, RegisterForm form, HttpSession session)
+  {
+    // Create a user object and set the username and password
+    // from the register form
+    User user = new User();
+    user.setUsername(form.getUsername());
+    user.setPassword(form.getPassword());
+    
+    try
+    { // Add the user in the database
+      jdbcUserDAO.add(user);
+    }
+    catch (Exception e)
+    { // Exception occurs if the username already exists.
+      // Stores exception message in session.
+      session.setAttribute("error", e.getMessage());
+    }
+    
+    // Go back to login screen after registering the user.
+    model.put("loginURL", "login");
+    return new RedirectView("/login/{loginURL}", true);
   }
 
   public void setJdbcUserDAO(JdbcUserDAO jdbcUserDAO)  
