@@ -13,6 +13,10 @@
   <context:component-scan base-package="config" />
   
   <mvc:annotation-driven />
+
+  <bean id="emf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+    <property name = "persistenceUnitName" value = "MyJPA" />
+  </bean>
   
   <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
     <property name="driverClassName" value="org.hsqldb.jdbcDriver" />

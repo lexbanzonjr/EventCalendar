@@ -111,19 +111,13 @@
       <artifactId>spring-beans</artifactId>
       <version>4.3.4.RELEASE</version>
     </dependency>
-  
-    <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-annotations -->
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-annotations</artifactId>
-      <version>3.5.6-Final</version>
-    </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager -->
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-entitymanager</artifactId>
-      <version>5.2.5.Final</version>
+      <version>4.3.6.Final</version>
+      <scope>runtime</scope>
     </dependency>
     
     <!-- https://mvnrepository.com/artifact/org.eclipse.persistence/javax.persistence -->
@@ -132,7 +126,7 @@
       <artifactId>javax.persistence</artifactId>
       <version>2.1.1</version>
     </dependency>
-    
+
 </dependencies>
   
 
