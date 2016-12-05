@@ -25,6 +25,10 @@
     <property name="password" value="Passw0rd" />
   </bean>
   
+  <bean name="jpaUserDAO" class="user.JpaUserDAO" >
+    <property name="factory" ref="emf" />  
+  </bean>
+  
   <bean name="jdbcEventDAO" class="event.JdbcEventDAO" >  
     <property name="dataSource" ref="dataSource" />
   </bean>
@@ -52,7 +56,7 @@
   </bean>
   
   <bean name="loginController" class="controllers.LoginController" >
-    <property name="jdbcUserDAO" ref="jdbcUserDAO" />
+    <property name="jpaUserDAO" ref="jpaUserDAO" />
   </bean>
   
   <bean name="logoutController" class="controllers.LogoutController" />

@@ -4,7 +4,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
-import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,14 +12,14 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import form.LoginForm;
 import form.RegisterForm;
-import user.JdbcUserDAO;
+import user.JpaUserDAO;
 import user.User;
 
 @Controller
 @RequestMapping("login")
 public class LoginController
 {
-  private JdbcUserDAO jdbcUserDAO;
+  private JpaUserDAO jpaUserDAO;
     
   @RequestMapping(value="/", method = RequestMethod.GET)
   public View home(Map<String, Object> model)
@@ -48,7 +47,7 @@ public class LoginController
     
     try
     { // Check to see if the user exists in the database
-      user = jdbcUserDAO.findUserByUsername(username);
+      user = jpaUserDAO.findUserByUsername(username);
     }
     catch (Exception e)
     { // An exception occurred. The user does not exist.
@@ -95,7 +94,7 @@ public class LoginController
     
     try
     { // Add the user in the database
-      jdbcUserDAO.add(user);
+      jpaUserDAO.add(user);
     }
     catch (Exception e)
     { // Exception occurs if the username already exists.
@@ -107,10 +106,9 @@ public class LoginController
     model.put("loginURL", "login");
     return new RedirectView("/login/{loginURL}", true);
   }
-
-  public void setJdbcUserDAO(JdbcUserDAO jdbcUserDAO)  
-  {
-    this.jdbcUserDAO = jdbcUserDAO;
-  }
   
+  public void setJpaUserDAO(JpaUserDAO jpaUserDAO)  
+  {
+    this.jpaUserDAO = jpaUserDAO;
+  }
 }
