@@ -40,6 +40,7 @@ local.properties
 Backup/
 RemoteSystemsTempFiles/
 Servers/
+.recommenders
 
 # External tool builders
 .externalToolBuilders/
