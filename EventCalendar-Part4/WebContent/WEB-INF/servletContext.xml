@@ -28,6 +28,10 @@
   <bean name="jpaUserDAO" class="user.JpaUserDAO" >
     <property name="factory" ref="emf" />  
   </bean>
+
+  <bean name="jpaEventDAO" class="event.JpaEventDAO" >
+    <property name="factory" ref="emf" />  
+  </bean>  
   
   <bean name="jdbcEventDAO" class="event.JdbcEventDAO" >  
     <property name="dataSource" ref="dataSource" />
@@ -62,6 +66,7 @@
   <bean name="logoutController" class="controllers.LogoutController" />
   
   <bean name="eventController" class="controllers.EventController" >
+    <property name="jpaEventDAO" ref="jpaEventDAO" />
     <property name="jdbcEventDAO" ref="jdbcEventDAO" />
     <property name="jdbcUserDAO" ref="jdbcUserDAO" />
     <property name="jdbcLikesDAO" ref="jdbcLikesDAO" />

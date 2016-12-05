@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity(name = "EventEntity")
 @Table(name = "Event")
@@ -21,20 +22,20 @@ public class Event implements Serializable
   private String endDateTime;
   private int eventId;
   private String eventName;
-  private boolean like;
+  private boolean liked;
   private int ownerId;
   private String ownerName;
   private String startDateTime;
   
   public Event()
   {
-    this.like = false;
+    this.liked = false;
   }
   
   public Event(String eventName, int ownerId, String startDateTime)
   {
     this.eventName = eventName;
-    this.like = false;
+    this.liked = false;
     this.ownerId = ownerId;
     this.startDateTime = startDateTime;
   }
@@ -42,7 +43,7 @@ public class Event implements Serializable
   public Event(String eventName, int ownerId, String startDateTime, String endDateTime)
   {
     this.eventName = eventName;
-    this.like = false;
+    this.liked = false;
     this.ownerId = ownerId;
     this.startDateTime = startDateTime;
     this.endDateTime = endDateTime;
@@ -103,7 +104,7 @@ public class Event implements Serializable
   
   public boolean isLike()
   {
-    return like;
+    return liked;
   }
   
   public void setCreateDateTime(String createDateTime)
@@ -111,6 +112,7 @@ public class Event implements Serializable
     this.createDateTime = createDateTime;
   }
   
+  @Transient
   public void setData(String data)
   {
     this.data = data;
@@ -130,10 +132,11 @@ public class Event implements Serializable
   {
     this.eventName = eventName;
   }
-  
+
+  @Transient
   public void setLike(boolean like)
   {
-    this.like = like;
+    this.liked = like;
   }
   
   public void setOwnerId(int ownerId)
@@ -141,6 +144,7 @@ public class Event implements Serializable
     this.ownerId = ownerId;
   }
   
+  @Transient
   public void setOwnerName(String ownerName)
   {
     this.ownerName = ownerName;

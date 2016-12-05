@@ -16,6 +16,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import event.Event;
 import event.JdbcEventDAO;
+import event.JpaEventDAO;
 import form.CreateNewEventForm;
 import likes.JdbcLikesDAO;
 import likes.Likes;
@@ -29,6 +30,7 @@ public class EventController
   private JdbcEventDAO jdbcEventDAO;
   private JdbcUserDAO jdbcUserDAO;
   private JdbcLikesDAO jdbcLikesDAO;
+  private JpaEventDAO jpaEventDAO;
   
   public boolean CheckDateFormatError(String month, String day, String year, boolean required)
   { 
@@ -89,7 +91,7 @@ public class EventController
       String endDateTime = endMonth + "-" + endDay + "-" + endYear;
       Event event = new Event(eventName, ownerId, startDateTime, endDateTime);
       
-      jdbcEventDAO.add(event);
+      jpaEventDAO.add(event);
       
       model.put("dashboardURL", "dashboard");
       redirect = new RedirectView("/{dashboardURL}", true);
@@ -248,5 +250,10 @@ public class EventController
   {
     this.jdbcUserDAO = jdbcUserDAO;
   }  
-
+  
+  public void setJpaEventDAO(JpaEventDAO jpaEventDAO)
+  {
+    this.jpaEventDAO = jpaEventDAO;
+    System.out.println("EventController.setJpaEventDAO(): " + this.jpaEventDAO.toString());  // For testing
+  }
 }
