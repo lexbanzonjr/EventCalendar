@@ -67,6 +67,7 @@
   
   <bean name="eventController" class="controllers.EventController" >
     <property name="jpaEventDAO" ref="jpaEventDAO" />
+    <property name="jpaUserDAO" ref="jpaUserDAO" />
     <property name="jdbcEventDAO" ref="jdbcEventDAO" />
     <property name="jdbcUserDAO" ref="jdbcUserDAO" />
     <property name="jdbcLikesDAO" ref="jdbcLikesDAO" />

@@ -21,6 +21,7 @@ import form.CreateNewEventForm;
 import likes.JdbcLikesDAO;
 import likes.Likes;
 import user.JdbcUserDAO;
+import user.JpaUserDAO;
 import user.User;
 
 @Controller
@@ -31,6 +32,7 @@ public class EventController
   private JdbcUserDAO jdbcUserDAO;
   private JdbcLikesDAO jdbcLikesDAO;
   private JpaEventDAO jpaEventDAO;
+  private JpaUserDAO jpaUserDAO;
   
   public boolean CheckDateFormatError(String month, String day, String year, boolean required)
   { 
@@ -182,7 +184,7 @@ public class EventController
     {
       // Set owner name in the event   
       int ownerId = event.getOwnerId();
-      User ownerUser = jdbcUserDAO.findUserById(ownerId);
+      User ownerUser = jpaUserDAO.findUserById(ownerId);
       String ownerName = ownerUser.getUsername();
       event.setOwnerName(ownerName);
       
@@ -209,12 +211,12 @@ public class EventController
   {  
     User user = (User) session.getAttribute("User");
     int userId = user.getId();
-    List<Event> eventList = jdbcEventDAO.findAllEventLikedByUserId(userId); 
+    List<Event> eventList = jpaEventDAO.findAllEventLikedByUserId(userId); 
     for (Event event : eventList)
     {
       // Set owner name in the event   
       int ownerId = event.getOwnerId();
-      User ownerUser = jdbcUserDAO.findUserById(ownerId);
+      User ownerUser = jpaUserDAO.findUserById(ownerId);
       String ownerName = ownerUser.getUsername();
       event.setOwnerName(ownerName);
       
@@ -254,6 +256,10 @@ public class EventController
   public void setJpaEventDAO(JpaEventDAO jpaEventDAO)
   {
     this.jpaEventDAO = jpaEventDAO;
-    System.out.println("EventController.setJpaEventDAO(): " + this.jpaEventDAO.toString());  // For testing
+  }
+  
+  public void setJpaUserDAO(JpaUserDAO jpaUserDAO)
+  {
+    this.jpaUserDAO = jpaUserDAO;
   }
 }

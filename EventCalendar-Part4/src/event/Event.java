@@ -8,11 +8,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-@Entity(name = "EventEntity")
-@Table(name = "Event")
+import likes.Likes;
+
+@Entity
+@Table
 public class Event implements Serializable
 {
   static String pattern = "MM-dd-yyyy";
@@ -50,7 +54,7 @@ public class Event implements Serializable
   }
   
   @Basic
-  @Column(name = "CREATEDATETIME")
+  @Column
   public String getCreateDateTime()
   {
     return createDateTime;
@@ -62,14 +66,14 @@ public class Event implements Serializable
   }
   
   @Basic
-  @Column(name = "ENDDATETIME")
+  @Column
   public String getEndDateTime()
   {
     return endDateTime;
   }
   
   @Id
-  @Column(name = "EVENTID")
+  @Column
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   public int getEventId()
   {
@@ -77,14 +81,14 @@ public class Event implements Serializable
   }
   
   @Basic
-  @Column(name = "EVENTNAME")
+  @Column
   public String getEventName()
   {
     return eventName;
   }
   
   @Basic
-  @Column(name = "OWNERID")
+  @Column
   public int getOwnerId()
   {
     return ownerId;
@@ -96,7 +100,7 @@ public class Event implements Serializable
   }
   
   @Basic
-  @Column(name = "STARTDATETIME")
+  @Column
   public String getStartDateTime()
   {
     return startDateTime;

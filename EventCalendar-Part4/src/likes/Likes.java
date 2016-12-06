@@ -10,8 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Entity(name = "LikesEntity")
-@Table(name = "Likes")
+@Entity
+@Table
 public class Likes implements Serializable 
 {
   private int likesId;
@@ -29,14 +29,14 @@ public class Likes implements Serializable
   }
   
   @Basic
-  @Column(name = "EVENTID")
+  @Column
   public int getEventId()
   {
     return eventId;
   }
 
   @Id
-  @Column(name = "ID")
+  @Column
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   public int getLikesId()
   {
@@ -44,7 +44,7 @@ public class Likes implements Serializable
   }
 
   @Basic
-  @Column(name = "USERID")
+  @Column
   public int getUserId()
   {
     return userId;
