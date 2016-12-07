@@ -106,7 +106,7 @@ public class Event implements Serializable
     return startDateTime;
   }
   
-  public boolean isLike()
+  public boolean isLiked()
   {
     return liked;
   }
@@ -138,9 +138,9 @@ public class Event implements Serializable
   }
 
   @Transient
-  public void setLike(boolean like)
+  public void setLiked(boolean liked)
   {
-    this.liked = like;
+    this.liked = liked;
   }
   
   public void setOwnerId(int ownerId)

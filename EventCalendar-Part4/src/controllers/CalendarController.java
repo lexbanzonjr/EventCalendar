@@ -71,7 +71,7 @@ public class CalendarController
       Likes like = jdbcLikesDAO.findLike(userId, eventId);
       if (like != null)
       {
-        event.setLike(true);
+        event.setLiked(true);
         event.setData("<a href=\"event/dislike/" + eventId + "\">Dislike</a> ");
       }
       else
