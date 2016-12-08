@@ -179,7 +179,7 @@ public class EventController
   {
     User user = (User) session.getAttribute("User");
     int userId = user.getId();
-    List<Event> eventList = jdbcEventDAO.findAllCreatedByUserId(userId); 
+    List<Event> eventList = jpaEventDAO.findAllCreatedByUserId(userId); 
     for (Event event : eventList)
     {
       // Set owner name in the event   
@@ -193,7 +193,7 @@ public class EventController
       Likes like = jdbcLikesDAO.findLike(ownerId, eventId);
       if (like != null)
       {
-        event.setLike(true);
+        event.setLiked(true);
         event.setData("<a href=\"dislike/" + eventId + "\">Dislike</a> ");
       }
       else

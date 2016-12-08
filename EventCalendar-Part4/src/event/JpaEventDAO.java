@@ -111,17 +111,6 @@ public class JpaEventDAO implements EventDAO
       trans = em.getTransaction();
       trans.begin();
       
-//      String sql = "select "
-//          + "e.EventId, "
-//          + "e.CreateDateTime, "
-//          + "e.EndDateTime, "
-//          + "e.EventName, "
-//          + "e.OwnerId, "
-//          + "e.StartDateTime "
-//          + "from " + Event.class.getName() + " e "
-//          + "join " + Likes.class.getName() + " l on e.EventId=l.EventId "
-//          + "where l.userId = " + userId + " "
-//          + "order by to_date(e.StartDateTime, 'MM-DD-YYYY') desc";   
       String sql = "select "
           + "e.eventId, "
           + "e.createDateTime, "
@@ -144,16 +133,7 @@ public class JpaEventDAO implements EventDAO
         event.setEventName(String.valueOf(elements[5]));
         result.add(event);
       }   
-      
-//      CriteriaBuilder cb = em.getCriteriaBuilder();
-//      CriteriaQuery<Event> cq = cb.createQuery(Event.class);
-//      Root<Event> event = cq.from(Event.class);
-//      Join<Event, Likes> likes = cq.;
-//      cq.select(event);
-//      cq.where(cb.equal(event.get("ownerid"), Integer.toString(userId)));
-//      TypedQuery<Event> q = em.createQuery(cq);
-//      result = (List<Event>) q.getResultList();      
-      
+            
       trans.commit();
     }
     catch (Exception e)
@@ -173,7 +153,53 @@ public class JpaEventDAO implements EventDAO
   @Override
   public List<Event> findAllCreatedByUserId(int userId)
   {
-    return null;
+    List<Event> result = new ArrayList<Event>();
+    EntityManager em = null;
+    EntityTransaction trans = null;
+    
+    try
+    {
+      em = factory.createEntityManager();
+      trans = em.getTransaction();
+      trans.begin();
+      
+      String sql = "select "
+          + "e.eventId, "
+          + "e.createDateTime, "
+          + "e.endDateTime, "
+          + "e.ownerId, "
+          + "case e.startDateTime when '' then '01-01-1900' else e.startDateTime end, "
+          + "case e.endDateTime when '' then '01-01-1900' when '--' then '01-01-1900' else e.endDateTime end "
+          + "from " + Event.class.getName() + " e "
+          + "where e.ownerId = " + userId;
+      List<Object[]> results = em.createQuery(sql).getResultList();
+      
+      for(Object[] elements : results)
+      {
+        Event event = new Event();
+        event.setEventId(Integer.valueOf(String.valueOf(elements[0])));
+        event.setCreateDateTime(String.valueOf(elements[1]));
+        event.setEndDateTime(String.valueOf(elements[2]));
+        event.setOwnerId(Integer.valueOf(String.valueOf(elements[3])));
+        event.setStartDateTime(String.valueOf(elements[4]));
+        event.setEventName(String.valueOf(elements[5]));
+        result.add(event);
+      }   
+            
+      trans.commit();
+    }
+    catch (Exception e)
+    {
+      if(trans != null && trans.isActive())
+        trans.rollback();
+      e.printStackTrace();
+    }
+    finally
+    {
+      if (em != null && em.isOpen())
+        em.close();
+    }    
+    return result;
   }
 
   @Override
