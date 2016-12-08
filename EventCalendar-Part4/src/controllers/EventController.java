@@ -19,6 +19,7 @@ import event.JdbcEventDAO;
 import event.JpaEventDAO;
 import form.CreateNewEventForm;
 import likes.JdbcLikesDAO;
+import likes.JpaLikesDAO;
 import likes.Likes;
 import user.JdbcUserDAO;
 import user.JpaUserDAO;
@@ -33,6 +34,7 @@ public class EventController
   private JdbcLikesDAO jdbcLikesDAO;
   private JpaEventDAO jpaEventDAO;
   private JpaUserDAO jpaUserDAO;
+  private JpaLikesDAO jpaLikesDAO;
   
   public boolean CheckDateFormatError(String month, String day, String year, boolean required)
   { 
@@ -155,7 +157,7 @@ public class EventController
     
     // Add like to Likes table
     Likes likes = new Likes(userId, eventId);
-    jdbcLikesDAO.add(likes);
+    jpaLikesDAO.add(likes);
 
     String currentPage = (String) session.getAttribute("currentPage");
     
@@ -256,6 +258,11 @@ public class EventController
   public void setJpaEventDAO(JpaEventDAO jpaEventDAO)
   {
     this.jpaEventDAO = jpaEventDAO;
+  }
+  
+  public void setJpaLikesDAO(JpaLikesDAO jpaLikesDAO)
+  {
+    this.jpaLikesDAO = jpaLikesDAO;
   }
   
   public void setJpaUserDAO(JpaUserDAO jpaUserDAO)
