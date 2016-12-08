@@ -1,5 +1,6 @@
 package user;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
@@ -54,7 +55,7 @@ public class JpaUserDAO implements UserDAO
   @Override
   public User findUserById(int UserId)
   {
-    User result = null;
+    User result = new User();
     EntityManager em = null;
     EntityTransaction trans = null;
     
@@ -64,14 +65,25 @@ public class JpaUserDAO implements UserDAO
       trans = em.getTransaction();
       trans.begin();
       
-      CriteriaBuilder cb = em.getCriteriaBuilder();
-      CriteriaQuery<User> cq = cb.createQuery(User.class);
-      Root<User> user = cq.from(User.class);
-      cq.select(user);
-      cq.where(cb.equal(user.get("Id"), UserId));
-      TypedQuery<User> q = em.createQuery(cq);
-      result = (User) q.getSingleResult();      
+      String sql = "select u.id, u.username, u.password "
+          + "from " + User.class.getName() + " u";
+      List<Object[]> results = em.createQuery(sql).getResultList();
       
+      for(Object[] elements : results)
+      { // Don't know how to use the getSingleResult(). Did it this way.
+        result.setId(Integer.valueOf(String.valueOf(elements[0])));
+        result.setUsername(String.valueOf(elements[1]));
+        result.setPassword(String.valueOf(elements[2]));
+        break;
+      }
+//      CriteriaBuilder cb = em.getCriteriaBuilder();
+//      CriteriaQuery<User> cq = cb.createQuery(User.class);
+//      Root<User> user = cq.from(User.class);
+//      cq.select(user);
+//      cq.where(cb.equal(user.get("Id"), UserId));
+//      TypedQuery<User> q = em.createQuery(cq);
+//      result = (User) q.getSingleResult();      
+
       trans.commit();
     }
     catch (Exception e)

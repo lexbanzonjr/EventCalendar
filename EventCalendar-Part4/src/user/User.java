@@ -11,8 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-@Entity(name = "UserEntity")
-@Table(name = "User")
+@Entity
+@Table
 public class User implements Serializable
 {
   private int Id;

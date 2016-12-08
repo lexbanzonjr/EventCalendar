@@ -130,7 +130,7 @@ public class JpaEventDAO implements EventDAO
           + "e.startDateTime, "
           + "e.eventName "
           + "from " + Event.class.getName() + " e, " + Likes.class.getName() + " l "
-          + "where e.eventId = l.eventId and l.userId = 0";
+          + "where e.eventId = l.eventId and l.userId = " + userId;
       List<Object[]> results = em.createQuery(sql).getResultList();
       
       for(Object[] elements : results)
