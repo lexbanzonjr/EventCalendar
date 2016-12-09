@@ -29,9 +29,6 @@ import user.User;
 @RequestMapping("event")
 public class EventController
 {
-  private JdbcEventDAO jdbcEventDAO;
-  private JdbcUserDAO jdbcUserDAO;
-  private JdbcLikesDAO jdbcLikesDAO;
   private JpaEventDAO jpaEventDAO;
   private JpaUserDAO jpaUserDAO;
   private JpaLikesDAO jpaLikesDAO;
@@ -239,21 +236,6 @@ public class EventController
     
     return "ViewLikedEvents";
   }
-  
-  public void setJdbcEventDAO(JdbcEventDAO jdbcEventDAO)  
-  {
-    this.jdbcEventDAO = jdbcEventDAO;
-  }  
-
-  public void setJdbcLikesDAO(JdbcLikesDAO jdbcLikesDAO)
-  {
-    this.jdbcLikesDAO = jdbcLikesDAO;
-  }
-  
-  public void setJdbcUserDAO(JdbcUserDAO jdbcUserDAO)  
-  {
-    this.jdbcUserDAO = jdbcUserDAO;
-  }  
   
   public void setJpaEventDAO(JpaEventDAO jpaEventDAO)
   {
