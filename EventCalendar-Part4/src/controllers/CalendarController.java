@@ -1,37 +1,30 @@
 package controllers;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.RedirectView;
 
 import event.Event;
-import event.JdbcEventDAO;
-import likes.JdbcLikesDAO;
+import event.JpaEventDAO;
+import likes.JpaLikesDAO;
 import likes.Likes;
-import user.JdbcUserDAO;
+import user.JpaUserDAO;
 import user.User;
 
 @Controller
 public class CalendarController
 {  
   
-  private JdbcEventDAO jdbcEventDAO;
-  private JdbcLikesDAO jdbcLikesDAO;
-  private JdbcUserDAO jdbcUserDAO;
+  private JpaEventDAO jpaEventDAO;
+  private JpaLikesDAO jpaLikesDAO;
+  private JpaUserDAO jpaUserDAO;
   
   @RequestMapping("/")
   public View Home(HttpSession session, Map<String, Object> model)
@@ -56,19 +49,19 @@ public class CalendarController
       response.sendRedirect("login/login");
     }
     // Get all events
-    List<Event> eventList = jdbcEventDAO.findAll();      
+    List<Event> eventList = jpaEventDAO.findAll();      
     for (Event event : eventList)
     { 
       // Set owner name in the event
       int ownerId = event.getOwnerId();
-      User user = jdbcUserDAO.findUserById(ownerId);
+      User user = jpaUserDAO.findUserById(ownerId);
       String ownerName = user.getUsername();
       event.setOwnerName(ownerName);
       
       // Set like in the event
       int eventId = event.getEventId();
       int userId = loginUser.getId();
-      Likes like = jdbcLikesDAO.findLike(userId, eventId);
+      Likes like = jpaLikesDAO.findLike(userId, eventId);
       if (like != null)
       {
         event.setLiked(true);
@@ -85,19 +78,19 @@ public class CalendarController
     return "Dashboard";
   }  
   
-  public void setJdbcEventDAO(JdbcEventDAO jdbcEventDAO)  
+  public void setJpaEventDAO(JpaEventDAO jpaEventDAO)  
   {
-    this.jdbcEventDAO = jdbcEventDAO;
+    this.jpaEventDAO = jpaEventDAO;
   }
   
-  public void setJdbcLikesDAO(JdbcLikesDAO jdbcLikesDAO)
+  public void setJpaLikesDAO(JpaLikesDAO jpaLikesDAO)
   {
-    this.jdbcLikesDAO = jdbcLikesDAO;
+    this.jpaLikesDAO = jpaLikesDAO;
   }
   
-  public void setJdbcUserDAO(JdbcUserDAO jdbcUserDAO)  
+  public void setJpaUserDAO(JpaUserDAO jpaUserDAO)  
   {
-    this.jdbcUserDAO = jdbcUserDAO;
+    this.jpaUserDAO = jpaUserDAO;
   }  
 }
 

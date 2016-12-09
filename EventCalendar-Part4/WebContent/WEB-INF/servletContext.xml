@@ -18,13 +18,6 @@
     <property name = "persistenceUnitName" value = "MyJPA" />
   </bean>
   
-  <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-    <property name="driverClassName" value="org.hsqldb.jdbcDriver" />
-    <property name="url" value="jdbc:hsqldb:hsql://localhost/cpsc476;ifexists=true" />
-    <property name="username" value="SA" />
-    <property name="password" value="Passw0rd" />
-  </bean>
-  
   <bean name="jpaUserDAO" class="user.JpaUserDAO" >
     <property name="factory" ref="emf" />  
   </bean>
@@ -37,30 +30,14 @@
     <property name="factory" ref="emf" />
   </bean>
   
-  <bean name="jdbcEventDAO" class="event.JdbcEventDAO" >  
-    <property name="dataSource" ref="dataSource" />
-  </bean>
-  
-  <bean name="jdbcUserDAO" class="user.JdbcUserDAO">
-    <property name="dataSource" ref="dataSource" />
-  </bean>
-  
-  <bean name="jdbcLikesDAO" class="likes.JdbcLikesDAO" >
-    <property name="dataSource" ref="dataSource" />
-  </bean> 
-  
   <!--bean name="hsqldbController" class="controllers.HsqldbController"-->
   <bean name="starter" init-method="start" class="config.Starter">
-    <property name="dataSource" ref="dataSource" />
-    <property name="jdbcEventDAO" ref="jdbcEventDAO" />
-    <property name="jdbcUserDAO" ref="jdbcUserDAO" />
-    <property name="jdbcLikesDAO" ref="jdbcLikesDAO" />
   </bean> 
   
   <bean name="calendarController" class="controllers.CalendarController" >
-    <property name="jdbcUserDAO" ref="jdbcUserDAO" />
-    <property name="jdbcEventDAO" ref="jdbcEventDAO" />
-    <property name="jdbcLikesDAO" ref="jdbcLikesDAO" />
+    <property name="jpaUserDAO" ref="jpaUserDAO" />
+    <property name="jpaEventDAO" ref="jpaEventDAO" />
+    <property name="jpaLikesDAO" ref="jpaLikesDAO" />
   </bean>
   
   <bean name="loginController" class="controllers.LoginController" >
@@ -73,8 +50,5 @@
     <property name="jpaEventDAO" ref="jpaEventDAO" />
     <property name="jpaUserDAO" ref="jpaUserDAO" />
     <property name="jpaLikesDAO" ref="jpaLikesDAO" />
-    <property name="jdbcEventDAO" ref="jdbcEventDAO" />
-    <property name="jdbcUserDAO" ref="jdbcUserDAO" />
-    <property name="jdbcLikesDAO" ref="jdbcLikesDAO" />
   </bean>
 </beans>

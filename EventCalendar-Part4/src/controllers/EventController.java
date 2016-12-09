@@ -15,13 +15,10 @@ import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.RedirectView;
 
 import event.Event;
-import event.JdbcEventDAO;
 import event.JpaEventDAO;
 import form.CreateNewEventForm;
-import likes.JdbcLikesDAO;
 import likes.JpaLikesDAO;
 import likes.Likes;
-import user.JdbcUserDAO;
 import user.JpaUserDAO;
 import user.User;
 
@@ -45,7 +42,7 @@ public class EventController
     String dateInString = month + "-" + day + "-" + year;    
     try
     {
-      Date date = formatter.parse(dateInString);
+      formatter.parse(dateInString);
     }
     catch (Exception e)
     {
