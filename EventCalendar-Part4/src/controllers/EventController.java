@@ -122,7 +122,7 @@ public class EventController
     
     // Add like to Likes table
     Likes likes = new Likes(userId, eventId);
-    jdbcLikesDAO.remove(likes);
+    jpaLikesDAO.remove(likes);
     
     String currentPage = (String) session.getAttribute("currentPage");
         
@@ -192,7 +192,7 @@ public class EventController
       
       // Set like in the event
       int eventId = event.getEventId();
-      Likes like = jdbcLikesDAO.findLike(ownerId, eventId);
+      Likes like = jpaLikesDAO.findLike(ownerId, eventId);
       if (like != null)
       {
         event.setLiked(true);
@@ -224,7 +224,7 @@ public class EventController
       
       // Set like in the event
       int eventId = event.getEventId();
-      Likes like = jdbcLikesDAO.findLike(userId, eventId);
+      Likes like = jpaLikesDAO.findLike(userId, eventId);
       if (like != null)
       {
         event.setLiked(true);
