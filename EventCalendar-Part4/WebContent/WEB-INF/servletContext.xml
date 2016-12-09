@@ -30,10 +30,6 @@
     <property name="factory" ref="emf" />
   </bean>
   
-  <!--bean name="hsqldbController" class="controllers.HsqldbController"-->
-  <bean name="starter" init-method="start" class="config.Starter">
-  </bean> 
-  
   <bean name="calendarController" class="controllers.CalendarController" >
     <property name="jpaUserDAO" ref="jpaUserDAO" />
     <property name="jpaEventDAO" ref="jpaEventDAO" />
