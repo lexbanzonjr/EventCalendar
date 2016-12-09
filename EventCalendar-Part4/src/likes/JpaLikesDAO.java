@@ -43,13 +43,13 @@ public class JpaLikesDAO implements LikesDAO
   @Override
   public void createTable()
   {
-    
+    /* Only for jdbc */
   }
 
   @Override
   public List<Likes> findAllLikesByUserId(int userId)
   {
-    List<Likes> result = new ArrayList<Likes>();
+    List<Likes> listLikes = new ArrayList<Likes>();
     EntityManager em = null;
     EntityTransaction trans = null;
     
@@ -65,15 +65,15 @@ public class JpaLikesDAO implements LikesDAO
           + "l.eventId, "
           + "from " + Likes.class.getName() + " l "
           + "where l.userId = " + userId;
-      List<Object[]> results = em.createQuery(sql).getResultList();
+      List<Object[]> result = em.createQuery(sql).getResultList();
       
-      for (Object[] elements : results)
+      for (Object[] elements : result)
       {
         Likes likes = new Likes();
         likes.setLikesId(Integer.valueOf(String.valueOf(elements[0])));
         likes.setUserId(Integer.valueOf(String.valueOf(elements[1])));
         likes.setEventId(Integer.valueOf(String.valueOf(elements[2])));
-        result.add(likes);        
+        listLikes.add(likes);        
       }
       
       trans.commit();
@@ -90,13 +90,13 @@ public class JpaLikesDAO implements LikesDAO
         em.close();
     }     
     
-    return result;
+    return listLikes;
   }
 
   @Override
   public Likes findLike(int userId, int eventId) throws Exception
   {
-    Likes result = null;
+    Likes likes = null;
     EntityManager em = null;
     EntityTransaction trans = null;
     
@@ -114,13 +114,15 @@ public class JpaLikesDAO implements LikesDAO
           + "where l.userId = " + userId + " and l.eventId = " + eventId;
       List<Object[]> results = em.createQuery(sql).getResultList();
       
-      
+      if (results.size() > 1)
+        throw new Exception("Returned more than 1 record.");
+        
       for (Object[] elements : results)
-      {
-        result = new Likes();
-        result.setLikesId(Integer.valueOf(String.valueOf(elements[0])));
-        result.setUserId(Integer.valueOf(String.valueOf(elements[1])));
-        result.setEventId(Integer.valueOf(String.valueOf(elements[2])));
+      { 
+        likes = new Likes();
+        likes.setLikesId(Integer.valueOf(String.valueOf(elements[0])));
+        likes.setUserId(Integer.valueOf(String.valueOf(elements[1])));
+        likes.setEventId(Integer.valueOf(String.valueOf(elements[2])));
       }
       
       trans.commit();
@@ -137,7 +139,7 @@ public class JpaLikesDAO implements LikesDAO
         em.close();
     }     
     
-    return result;
+    return likes;
   }
 
   @Override
@@ -148,13 +150,16 @@ public class JpaLikesDAO implements LikesDAO
     
     try
     {
-      Likes result = findLike(likes.getUserId(), likes.getEventId());
-      System.out.println(likes.getUserId() + " " + likes.getEventId());
+      Likes tmpLikes = findLike(likes.getUserId(), likes.getEventId());
+      
+      if (tmpLikes == null)
+        throw new Exception("No like found to remove.");
+      
       em = factory.createEntityManager();
       trans = em.getTransaction();
       trans.begin();
       
-      em.remove(em.contains(result) ? result : em.merge(result));
+      em.remove(em.contains(tmpLikes) ? tmpLikes : em.merge(tmpLikes));
       
       trans.commit();
     }
