@@ -82,7 +82,13 @@ public class EventController
     }
     else
     {        
-      User user = (User) session.getAttribute("User");
+      User user = (User) session.getAttribute("User");    
+      if (user == null)
+      {
+        model.put("loginURL", "login");
+        return new RedirectView("/login/{loginURL}", true);
+      }
+      
       int ownerId = user.getId();
       
       String startDateTime = startMonth + "-" + startDay + "-" + startYear;
@@ -109,7 +115,12 @@ public class EventController
   public View Dislike(@PathVariable("eventId") int eventId, HttpSession session, Map<String, Object> model)
   {
     // Get user object from session
-    User user = (User) session.getAttribute("User");
+    User user = (User) session.getAttribute("User");    
+    if (user == null)
+    {
+      model.put("loginURL", "login");
+      return new RedirectView("/login/{loginURL}", true);
+    }
     
     // Get the id
     int userId = user.getId();
@@ -144,7 +155,12 @@ public class EventController
   public View Like(@PathVariable("eventId") int eventId, HttpSession session, Map<String, Object> model)
   {
     // Get user object from session
-    User user = (User) session.getAttribute("User");
+    User user = (User) session.getAttribute("User");    
+    if (user == null)
+    {
+      model.put("loginURL", "login");
+      return new RedirectView("/login/{loginURL}", true);
+    }
     
     // Get the id
     int userId = user.getId();
