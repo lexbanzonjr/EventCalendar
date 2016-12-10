@@ -25,7 +25,7 @@ import user.User;
 
 @WebServlet(
   name = "CalendarServlet",
-  urlPatterns = "/calendar",
+  urlPatterns = {"/calendar", "/"},
   loadOnStartup = 1  
 )
 public class CalendarServlet extends HttpServlet 
